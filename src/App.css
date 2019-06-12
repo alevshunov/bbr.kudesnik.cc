@@ -52,7 +52,7 @@ body {
     width: 60px;
 }
 .group {
-    width: 35px;
+    width: 30px;
 }
 
 .value {
@@ -74,4 +74,40 @@ body {
 
 .tools * + * {
     margin-left: 20px;
+}
+
+
+@media print {
+    .container {
+        border:solid 1px black;
+        width: auto;
+        height: auto;
+        font-size: 13px;
+        color: black;
+    }
+
+    .container tr td, .container tr th {
+        padding: 0px 0px 0px 0px;
+    }
+
+    .container thead th {
+        background-color: #808080;
+        color: black;
+    }
+
+    .value {
+        width: 60px;
+    }
+
+    .tools {
+        display: none;
+    }
+
+    .container tr:nth-child(2n) td {
+        background-color: white;
+    }
+
+    .container tr:nth-child(2n+1) td {
+        background-color: #cccccc;
+    }
 }

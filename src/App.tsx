@@ -81,11 +81,11 @@ class App extends React.Component<Props, State> {
             <table className={styles.container} cellPadding={0} cellSpacing={0}>
                 <thead>
                     <tr>
-                        <th>Ярды</th>
-                        <th>Метры</th>
-                        <th colSpan={2}>Группы</th>
+                        <th>Yard</th>
+                        <th>Meter</th>
+                        <th colSpan={2}>Group</th>
                         <th>#</th>
-                        <th>
+                        <th className={styles.tools}>
                             {locked && <i className="fas fa-lock" onClick={() => this.doSetLock(false)}/>}
                             {!locked && <i className="fas fa-lock-open" onClick={() => this.doSetLock(true)}/>}
                         </th>

@@ -1,8 +1,11 @@
 {
   "name": "bbr",
   "version": "1.0.0",
-  "description": "",
+  "description": "Archery. BB(R) markers storage app.",
   "main": "index.js",
+  "repository": {
+    "url": "https://github.com/alevshunov/bbr.kudesnik.cc"
+  },
   "scripts": {
     "build": "kk-react-build",
     "dev": "kk-react-dev"
