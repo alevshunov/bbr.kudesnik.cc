@@ -54,6 +54,9 @@ body {
 .yard {
     width: 60px;
 }
+.yard.unlocked {
+    width: 100px;
+}
 .meter {
     width: 60px;
 }
@@ -64,6 +67,9 @@ body {
 .value {
     width: 70px;
 }
+
+.yard i:first-child { margin-right: 10px; }
+.yard i:last-child { margin-left: 10px; }
 
 .tools {
 

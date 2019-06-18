@@ -25,7 +25,7 @@ class App extends React.Component<Props, State> {
         function fill(yard: number, value: number = 0): Entry {
             return {
                 yard,
-                meter: Math.round(yard * 0.9),
+                meter: Math.round(yard / 1.094),
                 groupA: yard > 60 ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4,
                 groupJ: yard > 50 ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4,
                 value
@@ -36,31 +36,32 @@ class App extends React.Component<Props, State> {
         if (data) {
             this.state = JSON.parse(data);
         } else {
+            const ranges = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
             this.state = {
                 locked: true,
-                data: [
-                    fill(10),
-                    fill(15),
-                    fill(20),
-                    fill(25),
-                    fill(30),
-                    fill(35),
-                    fill(40),
-                    fill(45),
-                    fill(50),
-                    fill(55),
-                    fill(60),
-                    fill(65),
-                    fill(70),
-                    fill(75),
-                    fill(80)
-                ]
+                data: ranges.map(fill)
             };
         }
     }
 
     doIncrease(e: Entry, delta: number = 1) {
         e.value = (e.value || 0) + delta;
+
+        this.setState({
+            data: [...this.state.data]
+        });
+
+        localStorage.setItem('data', JSON.stringify(this.state));
+    }
+
+    doYardIncrease(e: Entry, delta: number = 1) {
+        const yard = e.yard + delta;
+        Object.assign(e, {
+            yard,
+            meter: Math.round(yard / 1.094),
+            groupA: yard > 60 ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4,
+            groupJ: yard > 50 ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4
+        });
 
         this.setState({
             data: [...this.state.data]
@@ -96,23 +97,37 @@ class App extends React.Component<Props, State> {
                     data.map(
                         e => (
                             <tr key={e.yard}>
-                                <td className={styles.yard}>{e.yard}</td>
+                                <td className={styles.yard + (!locked ? ' ' + styles.unlocked : '')}>
+                                    {!locked &&
+                                        <i
+                                            className="fas fa-minus-circle"
+                                            onClick={() => this.doYardIncrease(e, -1)}
+                                        />
+                                    }
+                                    {e.yard}
+                                    {!locked &&
+                                        <i
+                                            className="fas fa-plus-circle"
+                                            onClick={() => this.doYardIncrease(e, 1)}
+                                        />
+                                    }
+                                </td>
                                 <td className={styles.meter}>{e.meter}</td>
                                 <td className={styles.group}>{e.groupA}</td>
                                 <td className={styles.group}>{e.groupJ}</td>
                                 <td className={styles.value}>{e.value}</td>
                                 <td className={styles.tools}>
                                     {!locked &&
-                                        <i
-                                            className="fas fa-minus-circle"
-                                            onClick={() => this.doIncrease(e, -0.5)}
-                                        />
-                                    }
-                                    {!locked &&
-                                        <i
-                                            className="fas fa-plus-circle"
-                                            onClick={() => this.doIncrease(e, 0.5)}
-                                        />
+                                        <div>
+                                            <i
+                                                className="fas fa-minus-circle"
+                                                onClick={() => this.doIncrease(e, -0.5)}
+                                            />
+                                            <i
+                                                className="fas fa-plus-circle"
+                                                onClick={() => this.doIncrease(e, 0.5)}
+                                            />
+                                        </div>
                                     }
                                 </td>
                             </tr>
