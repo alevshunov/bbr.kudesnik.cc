@@ -5,20 +5,32 @@ import styles from './DistancesView.scss';
 import coreStyles from './Common.scss';
 import { Tools } from './Tools';
 import { LockIcon } from './LockIcon';
-import { Entry } from '../core/types/All';
+import { Marker } from '../core/types/All';
 
 type Props = {
-    data: Entry[],
+    data: Marker[],
     locked: boolean,
-    onSetLock: (lock: boolean) => void
-    onYardIncrease: (e: Entry, delta?: number) => void
-    onValueIncrease: (e: Entry, delta?: number) => void
-    onValueReset: (e: Entry) => void
+    onLockToggle: (lock: boolean) => void
+    onYardIncrease: (e: Marker) => void
+    onYardDecrease: (e: Marker) => void
+    onValueIncrease: (e: Marker) => void
+    onValueDecrease: (e: Marker) => void
+    onValueReset: (e: Marker) => void
 };
 
 class DistancesView extends React.PureComponent<Props> {
     render() {
-        const { data, locked, onSetLock, onYardIncrease, onValueIncrease, onValueReset } = this.props;
+        const {
+            data,
+            locked,
+            onLockToggle,
+            onYardIncrease,
+            onYardDecrease,
+            onValueIncrease,
+            onValueDecrease,
+            onValueReset
+        } = this.props;
+
         return (
             <table className={styles.container}>
                 <thead>
@@ -28,7 +40,7 @@ class DistancesView extends React.PureComponent<Props> {
                     <th colSpan={2}>Group</th>
                     <th>#</th>
                     <th className={styles.tools}>
-                        <LockIcon locked={locked} onToggle={onSetLock} />
+                        <LockIcon locked={locked} onToggle={onLockToggle} />
                     </th>
                 </tr>
                 </thead>
@@ -40,12 +52,12 @@ class DistancesView extends React.PureComponent<Props> {
                                 <td className={styles.yard}>
                                     <i
                                         className={classNames('fas fa-minus-circle', {[coreStyles.hidden]: locked})}
-                                        onClick={() => onYardIncrease(e, -1)}
+                                        onClick={() => onYardDecrease(e)}
                                     />
                                     {e.yard}
                                     <i
                                         className={classNames('fas fa-plus-circle', {[coreStyles.hidden]: locked})}
-                                        onClick={() => onYardIncrease(e, 1)}
+                                        onClick={() => onYardIncrease(e)}
                                     />
                                 </td>
                                 <td className={styles.meter}>{yardToMeter(e.yard)}</td>
@@ -55,9 +67,9 @@ class DistancesView extends React.PureComponent<Props> {
                                 <td className={styles.tools}>
                                     <Tools
                                         className={classNames({[coreStyles.hidden]: locked})}
-                                        onPlusClick={() => onValueIncrease(e, -0.5)}
+                                        onPlusClick={() => onValueIncrease(e)}
                                         onResetClick={() => onValueReset(e)}
-                                        onMinusClick={() => onValueIncrease(e, 0.5)}
+                                        onMinusClick={() => onValueDecrease(e)}
                                     />
                                 </td>
                             </tr>

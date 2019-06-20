@@ -13,12 +13,15 @@
   "author": "Anton Levshunov",
   "license": "ISC",
   "dependencies": {
+    "@rematch/core": "^1.1.0",
     "@types/classnames": "^2.2.8",
+    "@types/react-redux": "^7.1.0",
     "classnames": "^2.2.6",
     "express": "^4.17.1",
     "kk-react-build": "github:alevshunov/kk-react-build",
     "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.0",
+    "react-redux": "^7.1.0"
   },
   "devDependencies": {
     "@types/node": "^8.10.17",

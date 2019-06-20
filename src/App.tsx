@@ -1,68 +1,45 @@
 import * as React from 'react';
 import DistancesView from './parts/DistancesView';
-import { Entry } from './core/types/All';
+import { connect } from 'react-redux';
+import { iRootState, Dispatch } from './models/Store';
 
-type Props = {
+const mapState = (state: iRootState) => ({
+    data: state.markers.markers,
+    locked: state.markers.locked
+});
 
-};
+const mapDispatch = (dispatch: Dispatch) => ({
+    doValueIncrease: dispatch.markers.doValueIncrease,
+    doValueDecrease: dispatch.markers.doValueDecrease,
+    doValueReset: dispatch.markers.doValueReset,
+    doYardIncrease: dispatch.markers.doYardIncrease,
+    doYardDecrease: dispatch.markers.doYardDecrease,
+    doLockToggle: (s: boolean) => { (s ? dispatch.markers.doLock : dispatch.markers.doUnlock)(); }
+});
 
-type State = {
-    data: Entry[],
-    locked: boolean
-};
+type connectedProps = ReturnType<typeof mapState> & ReturnType<typeof mapDispatch>;
+type Props = connectedProps;
 
-class App extends React.Component<Props, State> {
+class App extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
-
-        const data = localStorage.getItem('data');
-        if (data) {
-            this.state = JSON.parse(data);
-        } else {
-            const ranges = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
-            this.state = {
-                locked: true,
-                data: ranges.map(yard => ({ yard }))
-            };
-        }
-    }
-
-    doValueIncrease = (e: Entry, delta: number = 1) => {
-        e.value = e.value === undefined ? 0 : e.value + delta;
-        this.setState({ data: [...this.state.data] });
-    }
-
-    doValueReset = (e: Entry) => {
-        e.value = undefined;
-        this.setState({ data: [...this.state.data] });
-    }
-
-    doYardIncrease = (e: Entry, delta: number = 1) => {
-        e.yard += delta;
-        this.setState({ data: [...this.state.data] });
-    }
-
-    doSetLock = (locked: boolean) => {
-        this.setState({ locked });
-    }
-
-    componentDidUpdate() {
-        localStorage.setItem('data', JSON.stringify(this.state));
     }
 
     render() {
-        const { data, locked } = this.state;
+        const { locked, data } = this.props;
         return (
             <DistancesView
                 data={data}
                 locked={locked}
-                onSetLock={this.doSetLock}
-                onYardIncrease={this.doYardIncrease}
-                onValueIncrease={this.doValueIncrease}
-                onValueReset={this.doValueReset}
+                onLockToggle={this.props.doLockToggle}
+                onYardIncrease={this.props.doYardIncrease}
+                onYardDecrease={this.props.doYardDecrease}
+                onValueIncrease={this.props.doValueIncrease}
+                onValueDecrease={this.props.doValueDecrease}
+                onValueReset={this.props.doValueReset}
             />
         );
     }
 }
 
-export default App;
+export default connect(mapState, mapDispatch)(App);

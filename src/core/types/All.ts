@@ -1,6 +1,6 @@
-type Entry = {
+type Marker = {
     yard: number
     value?: number
 };
 
-export { Entry };
+export { Marker };
