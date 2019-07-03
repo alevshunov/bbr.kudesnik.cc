@@ -7,6 +7,7 @@ import { LockIcon } from './LockIcon';
 import { Entry } from '../core/types/All';
 import { IFAAGroup, YardTools } from '../core/YardTools';
 import TableReport, { Align } from './components/TableReport';
+import fa from './components/FontAwesome';
 
 type Props = {
     data: Entry[],
@@ -35,12 +36,12 @@ class DistancesView extends React.PureComponent<Props> {
                             render: (item) => (
                                 <>
                                     <i
-                                        className={classNames('fas fa-minus-circle', {[coreStyles.hidden]: locked})}
+                                        className={classNames(fa.minus, {[coreStyles.hidden]: locked})}
                                         onClick={() => onYardIncrease(item.source, -1)}
                                     />
                                     {item.source.yard}
                                     <i
-                                        className={classNames('fas fa-plus-circle', {[coreStyles.hidden]: locked})}
+                                        className={classNames(fa.plus, {[coreStyles.hidden]: locked})}
                                         onClick={() => onYardIncrease(item.source, 1)}
                                     />
                                 </>

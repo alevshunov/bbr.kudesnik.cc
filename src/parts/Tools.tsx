@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styles from './Tools.scss';
 import classNames from 'classnames';
+import fa from './components/FontAwesome';
 
 type Props = {
     onPlusClick: () => void,
@@ -14,15 +15,15 @@ export class Tools extends React.Component<Props> {
         return (
             <div className={classNames(styles.container, this.props.className)}>
                 <i
-                    className="fas fa-minus-circle"
+                    className={fa.plus}
                     onClick={this.props.onPlusClick}
                 />
                 <i
-                    className="fas fa-times-circle"
+                    className={fa.clear}
                     onClick={this.props.onResetClick}
                 />
                 <i
-                    className="fas fa-plus-circle"
+                    className={fa.minus}
                     onClick={this.props.onMinusClick}
                 />
             </div>

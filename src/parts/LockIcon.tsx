@@ -1,4 +1,5 @@
 import * as React from 'react';
+import fa from './components/FontAwesome';
 import classNames from 'classnames';
 
 type Props = {
@@ -9,10 +10,9 @@ type Props = {
 export class LockIcon extends React.Component<Props> {
     render() {
         const { locked, onToggle } = this.props;
-
         return (
             <i
-                className={classNames('fas', {'fa-lock': locked, 'fa-lock-open': !locked})}
+                className={classNames({[fa.lock]: locked, [fa.unlock]: !locked})}
                 onClick={() => onToggle(!locked)}
             />
         );
