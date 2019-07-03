@@ -27,6 +27,7 @@
     "jest",
     "src/setupTests.ts",
     "app.js",
+    "./public/sw.js",
     "ecosystem.config.js"
-  ]
+  ],
 }

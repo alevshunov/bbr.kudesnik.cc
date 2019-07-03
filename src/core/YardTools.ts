@@ -1,12 +1,24 @@
-function yardToMeter(yard: number) {
-    return Math.round(yard / 1.094);
+enum IFAAGroup {
+    Adult,
+    Junior
 }
 
-function yardToGroupAdult(yard: number) {
-    return yard > 60 ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4;
+class YardTools {
+    private _yard: number;
+
+    constructor(yard: number) {
+        this._yard = yard;
+    }
+
+    public toMeter() {
+        return Math.round(this._yard / 1.094);
+    }
+
+    public toGroup(group: IFAAGroup) {
+        const maxDistance = group === IFAAGroup.Adult ? 60 : 50;
+        const yard = this._yard;
+        return yard > maxDistance ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4;
+    }
 }
 
-function yardToGroupJunior(yard: number) {
-    return yard > 50 ? undefined : yard > 45 ? 1 : yard > 35 ? 2 : yard > 20 ? 3 : 4;
-}
-export { yardToMeter, yardToGroupAdult, yardToGroupJunior };
+export { YardTools, IFAAGroup };

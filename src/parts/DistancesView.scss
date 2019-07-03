@@ -36,19 +36,19 @@
                 padding: 10px 0px 10px 0px;
 
                 &.yard {
-                    width: 100px;
+                    width: 80px;
 
                     i:first-child { margin-right: 10px; }
                     i:last-child { margin-left: 10px; }
                 }
                 &.meter {
-                    width: 50px;
+                    width: 80px;
                 }
                 &.group {
-                    width: 30px;
+                    width: 60px;
                 }
                 &.value {
-                    width: 70px;
+                    width: 60px;
                 }
 
                 &.tools {
@@ -76,7 +76,7 @@
         font-size: 13px;
         color: black;
 
-        thead th {
+        thead tr th {
             background-color: #808080;
             color: black;
         }

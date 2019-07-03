@@ -1,11 +1,12 @@
 import * as React from 'react';
 import classNames from 'classnames';
-import { yardToGroupAdult, yardToGroupJunior, yardToMeter } from '../core/YardTools';
-import styles from './DistancesView.scss';
 import coreStyles from './Common.scss';
+import * as styles from './DistancesView.scss';
 import { Tools } from './Tools';
 import { LockIcon } from './LockIcon';
 import { Entry } from '../core/types/All';
+import { IFAAGroup, YardTools } from '../core/YardTools';
+import TableReport, { Align } from './components/TableReport';
 
 type Props = {
     data: Entry[],
@@ -19,53 +20,81 @@ type Props = {
 class DistancesView extends React.PureComponent<Props> {
     render() {
         const { data, locked, onSetLock, onYardIncrease, onValueIncrease, onValueReset } = this.props;
+        const dataWithYardTools = data.map(d => ({source: d, tools: new YardTools(d.yard)}));
+
         return (
-            <table className={styles.container}>
-                <thead>
-                <tr>
-                    <th>Yard</th>
-                    <th>Meter</th>
-                    <th colSpan={2}>Group</th>
-                    <th>#</th>
-                    <th className={styles.tools}>
-                        <LockIcon locked={locked} onToggle={onSetLock} />
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    data.map(
-                        (e, index) => (
-                            <tr key={index}>
-                                <td className={styles.yard}>
+            <TableReport
+                userCls={styles.container}
+                cells={
+                    [
+                        {
+                            title: 'Yard',
+                            field: 'yard',
+                            align: Align.center,
+                            userCls: styles.yard,
+                            render: (item) => (
+                                <>
                                     <i
                                         className={classNames('fas fa-minus-circle', {[coreStyles.hidden]: locked})}
-                                        onClick={() => onYardIncrease(e, -1)}
+                                        onClick={() => onYardIncrease(item.source, -1)}
                                     />
-                                    {e.yard}
+                                    {item.source.yard}
                                     <i
                                         className={classNames('fas fa-plus-circle', {[coreStyles.hidden]: locked})}
-                                        onClick={() => onYardIncrease(e, 1)}
+                                        onClick={() => onYardIncrease(item.source, 1)}
                                     />
-                                </td>
-                                <td className={styles.meter}>{yardToMeter(e.yard)}</td>
-                                <td className={styles.group}>{yardToGroupAdult(e.yard)}</td>
-                                <td className={styles.group}>{yardToGroupJunior(e.yard)}</td>
-                                <td className={styles.value}>{e.value}</td>
-                                <td className={styles.tools}>
-                                    <Tools
-                                        className={classNames({[coreStyles.hidden]: locked})}
-                                        onPlusClick={() => onValueIncrease(e, -0.5)}
-                                        onResetClick={() => onValueReset(e)}
-                                        onMinusClick={() => onValueIncrease(e, 0.5)}
-                                    />
-                                </td>
-                            </tr>
-                        )
-                    )
+                                </>
+                            )
+                        },
+                        {
+                            title: 'Meter',
+                            field: 'meter',
+                            align: Align.center,
+                            userCls: styles.meter,
+                            render: (item) => item.tools.toMeter()
+                        },
+                        {
+                            title: 'GA',
+                            field: 'ga',
+                            align: Align.center,
+                            userCls: styles.group,
+                            render: (item) => item.tools.toGroup(IFAAGroup.Adult)
+                        },
+                        {
+                            title: 'GJ',
+                            field: 'gj',
+                            align: Align.center,
+                            userCls: styles.group,
+                            render: (item) => item.tools.toGroup(IFAAGroup.Junior),
+                            hidden: true
+                        },
+                        {
+                            title: '#',
+                            field: 'value',
+                            userCls: styles.value,
+                            render: (item) => item.source.value,
+                            align: Align.center
+                        },
+                        {
+                            title: <LockIcon locked={locked} onToggle={onSetLock} />,
+                            field: 'tools',
+                            userCls: styles.tools,
+                            align: Align.right,
+                            render: (item) => (
+                                <Tools
+                                    className={classNames({[coreStyles.hidden]: locked})}
+                                    onPlusClick={() => onValueIncrease(item.source, -0.5)}
+                                    onResetClick={() => onValueReset(item.source)}
+                                    onMinusClick={() => onValueIncrease(item.source, 0.5)}
+                                />
+                            )
+                        }
+                    ]
                 }
-                </tbody>
-            </table>
+                data={
+                    dataWithYardTools
+                }
+            />
         );
     }
 }
