@@ -84,9 +84,9 @@ class DistancesView extends React.PureComponent<Props> {
                             render: (item) => (
                                 <Tools
                                     className={classNames({[coreStyles.hidden]: locked})}
-                                    onPlusClick={() => onValueIncrease(item.source, -0.5)}
+                                    onPlusClick={() => onValueIncrease(item.source, 0.5)}
                                     onResetClick={() => onValueReset(item.source)}
-                                    onMinusClick={() => onValueIncrease(item.source, 0.5)}
+                                    onMinusClick={() => onValueIncrease(item.source, -0.5)}
                                 />
                             )
                         }
